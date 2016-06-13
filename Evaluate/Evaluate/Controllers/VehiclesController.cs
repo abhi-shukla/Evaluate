@@ -1,6 +1,7 @@
 ﻿using Repository;
 using Repository.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -23,11 +24,30 @@ namespace Evaluate.Controllers
         // GET api/vehicles
         public IEnumerable<Vehicle> Get()
         {
-            return _inMemoryVehicleRepository.Get();
+            IEnumerable<Vehicle> vehicles = _inMemoryVehicleRepository.Get();
+            var allUrlKeyValues = ControllerContext.Request.GetQueryNameValuePairs();
+            if (allUrlKeyValues != null)
+            {
+                var dictionary = allUrlKeyValues.ToDictionary((keyItem) => keyItem.Key.ToLower(), (valueItem) => valueItem.Value.ToLower());
+
+                if (dictionary.Keys.Contains("model"))
+                {
+                    vehicles = vehicles.Where(x => x.Model.ToLower() == dictionary["model"]);
+                }
+                if (dictionary.Keys.Contains("make"))
+                {
+                    vehicles = vehicles.Where(x => x.Make.ToLower() == dictionary["make"]);
+                }
+                if (dictionary.Keys.Contains("year"))
+                {
+                    vehicles = vehicles.Where(x => x.Year == Convert.ToInt32(dictionary["year"]));
+                }
+            }
+            return vehicles;
         }
 
         // GET api/vehicles/5
-        public Vehicle Get(int id)
+        public Vehicle GetById(int id)
         {
             return _inMemoryVehicleRepository[id];
         }
@@ -49,5 +69,12 @@ namespace Evaluate.Controllers
         {
             _inMemoryVehicleRepository.Remove(id);
         }
+    }
+
+    public class QueryFilter
+    {
+        public string Make;
+        public string Model;
+        public int Year; 
     }
 }
