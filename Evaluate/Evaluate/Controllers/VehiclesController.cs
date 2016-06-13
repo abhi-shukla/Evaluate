@@ -10,7 +10,7 @@ using System.Web.Http.Cors;
 
 namespace Evaluate.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [EnableCors(origins: "https://estimate-dev.mymitchell.com", headers: "*", methods: "GET, POST, PATCH, PUT, DELETE, OPTIONS")]
     public class VehiclesController : ApiController
     {
         private readonly InMemoryVehicleRepository _inMemoryVehicleRepository;
@@ -39,13 +39,8 @@ namespace Evaluate.Controllers
         }
 
         // PUT api/vehicles/5
-        public void Put(int id, [FromBody]Vehicle vehicle)
+        public void Put([FromBody]Vehicle vehicle)
         {
-            if (id == 0 || (vehicle.Id != 0 && vehicle.Id != id))
-            {
-                throw new ArgumentOutOfRangeException("id");
-            }
-            vehicle = vehicle.CloneWith(id);
             _inMemoryVehicleRepository.Add(vehicle);
         }
 
