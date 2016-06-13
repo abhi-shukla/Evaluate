@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Repository;
+using Repository.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -11,31 +13,46 @@ namespace Evaluate.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class VehiclesController : ApiController
     {
-        // GET api/values
-        public IEnumerable<string> Get()
+        private readonly InMemoryVehicleRepository _inMemoryVehicleRepository;
+
+        public VehiclesController()
         {
-            return new string[] { "value1", "value2" };
+            _inMemoryVehicleRepository = InMemoryVehicleRepository.Instance;
         }
 
-        // GET api/values/5
-        public string Get(int id)
+        // GET api/vehicles
+        public IEnumerable<Vehicle> Get()
         {
-            return "value";
+            return _inMemoryVehicleRepository.Get();
         }
 
-        // POST api/values
-        public void Post([FromBody]string value)
+        // GET api/vehicles/5
+        public Vehicle Get(int id)
         {
+            return _inMemoryVehicleRepository[id];
         }
 
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
+        // POST api/vehicles
+        public void Post([FromBody]Vehicle vehicle)
         {
+            _inMemoryVehicleRepository.Add(vehicle);
         }
 
-        // DELETE api/values/5
+        // PUT api/vehicles/5
+        public void Put(int id, [FromBody]Vehicle vehicle)
+        {
+            if (id == 0 || (vehicle.Id != 0 && vehicle.Id != id))
+            {
+                throw new ArgumentOutOfRangeException("id");
+            }
+            vehicle = vehicle.CloneWith(id);
+            _inMemoryVehicleRepository.Add(vehicle);
+        }
+
+        // DELETE api/vehicles/5
         public void Delete(int id)
         {
+            _inMemoryVehicleRepository.Remove(id);
         }
     }
 }

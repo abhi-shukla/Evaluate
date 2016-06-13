@@ -93,7 +93,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
-    <Compile Include="Controllers\ValuesControllerTest.cs" />
+    <Compile Include="Controllers\VehiclesControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
@@ -105,6 +105,10 @@
     <ProjectReference Include="..\Evaluate\Evaluate.csproj">
       <Project>{C2FA83FD-F178-43D1-A31A-13ED6583A02F}</Project>
       <Name>Evaluate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Repository\Repository.csproj">
+      <Project>{ef49d721-8a7a-41d7-82dd-f9542e4544f6}</Project>
+      <Name>Repository</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

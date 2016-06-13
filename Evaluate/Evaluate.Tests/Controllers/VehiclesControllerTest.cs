@@ -5,22 +5,23 @@ using System.Net.Http;
 using System.Text;
 using System.Web.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Evaluate;
+using Evaluation;
+using Repository.Models;
 using Evaluate.Controllers;
 
-namespace Evaluate.Tests.Controllers
+namespace Evaluation.Tests.Controllers
 {
     [TestClass]
-    public class ValuesControllerTest
+    public class VehiclesControllerTest
     {
         [TestMethod]
         public void Get()
         {
             // Arrange
-            VehiclesController controller = new VehiclesController();
+            var controller = new VehiclesController();
 
             // Act
-            IEnumerable<string> result = controller.Get();
+            IEnumerable<Vehicle> result = controller.Get();
 
             // Assert
             Assert.IsNotNull(result);
@@ -36,10 +37,10 @@ namespace Evaluate.Tests.Controllers
             VehiclesController controller = new VehiclesController();
 
             // Act
-            string result = controller.Get(5);
+            var result = controller.Get(5);
 
             // Assert
-            Assert.AreEqual("value", result);
+            //Assert.AreEqual(new Vehicle(), result);
         }
 
         [TestMethod]
@@ -49,7 +50,7 @@ namespace Evaluate.Tests.Controllers
             VehiclesController controller = new VehiclesController();
 
             // Act
-            controller.Post("value");
+            //controller.Post(new Vehicle());
 
             // Assert
         }
@@ -61,7 +62,7 @@ namespace Evaluate.Tests.Controllers
             VehiclesController controller = new VehiclesController();
 
             // Act
-            controller.Put(5, "value");
+            //controller.Put(5, new Vehicle());
 
             // Assert
         }
