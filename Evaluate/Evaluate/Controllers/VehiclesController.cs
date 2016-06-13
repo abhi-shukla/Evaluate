@@ -4,10 +4,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace Evaluate.Controllers
 {
-    public class ValuesController : ApiController
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    public class VehiclesController : ApiController
     {
         // GET api/values
         public IEnumerable<string> Get()
