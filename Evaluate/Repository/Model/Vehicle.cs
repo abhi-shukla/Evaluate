@@ -1,14 +1,63 @@
-﻿namespace Repository.Models
+﻿using System;
+
+namespace Repository.Models
 {
     public class Vehicle
     {
-        public int Id { get; private set; }
+        int id;
+        string model;
+        string make;
+        int year;
 
-        public string Model { get; private set; }
 
-        public string Make { get; private set; }
+        public int Id {
+            get { return id; }
 
-        public int Year { get; private set; }
+            private set
+            {
+                if (id < 0)
+                    throw new ArgumentNullException("Id");
+                else
+                    id = value;
+            }
+        }
+
+        public string Model {
+            get { return model; }
+
+            private set
+            {
+                if (string.IsNullOrEmpty(value))
+                    throw new ArgumentNullException("Model");
+                else
+                    model = value;
+            }
+        }
+
+        public string Make
+        {
+            get { return make; }
+
+            private set
+            {
+                if (string.IsNullOrEmpty(value))
+                    throw new ArgumentNullException("Make");
+                else
+                    make = value;
+            }
+        }
+
+        public int Year {
+            get { return year; }
+
+            private set
+            {
+                if (value < 1950 || value > 2050)
+                    throw new ArgumentNullException("Year");
+                else
+                    year = value;
+            }
+        }
 
         public Vehicle(int id, string model, string make, int year)
         {
