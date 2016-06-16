@@ -22,7 +22,8 @@ namespace Evaluate.Controllers
         }
 
         // GET api/vehicles
-        public IEnumerable<Vehicle> Get()
+        [Route("api/vehicles/{make?}/{model?}/{year?}")]
+        public IEnumerable<Vehicle> Get(string make = null, string model = null, int year = 0)
         {
             IEnumerable<Vehicle> vehicles = _inMemoryVehicleRepository.Get();
             var allUrlKeyValues = ControllerContext.Request.GetQueryNameValuePairs();
@@ -46,25 +47,36 @@ namespace Evaluate.Controllers
             return vehicles;
         }
 
+        [Route("api/vehicles")]
+        public IEnumerable<Vehicle> Get()
+        {
+            IEnumerable<Vehicle> vehicles = _inMemoryVehicleRepository.Get();
+            return vehicles;
+        }
+
         // GET api/vehicles/5
+        [Route("api/vehicles/id")]
         public Vehicle GetById(int id)
         {
             return _inMemoryVehicleRepository[id];
         }
 
         // POST api/vehicles
+        [Route("api/vehicles")]
         public void Post([FromBody]Vehicle vehicle)
         {
             _inMemoryVehicleRepository.Add(vehicle);
         }
 
         // PUT api/vehicles/5
+        [Route("api/vehicles")]
         public void Put([FromBody]Vehicle vehicle)
         {
             _inMemoryVehicleRepository.Add(vehicle);
         }
 
         // DELETE api/vehicles/5
+        [Route("api/vehicles/id")]
         public void Delete(int id)
         {
             _inMemoryVehicleRepository.Remove(id);
