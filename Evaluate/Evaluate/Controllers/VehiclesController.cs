@@ -26,24 +26,19 @@ namespace Evaluate.Controllers
         public IEnumerable<Vehicle> Get(string make = null, string model = null, int year = 0)
         {
             IEnumerable<Vehicle> vehicles = _inMemoryVehicleRepository.Get();
-            var allUrlKeyValues = ControllerContext.Request.GetQueryNameValuePairs();
-            if (allUrlKeyValues != null)
+            if (!string.IsNullOrEmpty("model"))
             {
-                var dictionary = allUrlKeyValues.ToDictionary((keyItem) => keyItem.Key.ToLower(), (valueItem) => valueItem.Value.ToLower());
-
-                if (dictionary.Keys.Contains("model"))
-                {
-                    vehicles = vehicles.Where(x => x.Model.ToLower() == dictionary["model"]);
-                }
-                if (dictionary.Keys.Contains("make"))
-                {
-                    vehicles = vehicles.Where(x => x.Make.ToLower() == dictionary["make"]);
-                }
-                if (dictionary.Keys.Contains("year"))
-                {
-                    vehicles = vehicles.Where(x => x.Year == Convert.ToInt32(dictionary["year"]));
-                }
+                vehicles = vehicles.Where(x => x.Model.ToLower() == model.ToLower());
             }
+            if (!string.IsNullOrEmpty("make"))
+            {
+                vehicles = vehicles.Where(x => x.Make.ToLower() == make.ToLower());
+            }
+            if (year > 0)
+            {
+                vehicles = vehicles.Where(x => x.Year == year);
+            }
+
             return vehicles;
         }
 

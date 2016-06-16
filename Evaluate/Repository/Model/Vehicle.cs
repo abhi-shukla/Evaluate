@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace Repository.Models
 {
+    [DataContract]
     public class Vehicle
     {
         int id;
@@ -9,7 +11,7 @@ namespace Repository.Models
         string make;
         int year;
 
-
+        [DataMember]
         public int Id {
             get { return id; }
 
@@ -22,6 +24,7 @@ namespace Repository.Models
             }
         }
 
+        [DataMember]
         public string Model {
             get { return model; }
 
@@ -34,6 +37,7 @@ namespace Repository.Models
             }
         }
 
+        [DataMember]
         public string Make
         {
             get { return make; }
@@ -47,6 +51,7 @@ namespace Repository.Models
             }
         }
 
+        [DataMember]
         public int Year {
             get { return year; }
 
