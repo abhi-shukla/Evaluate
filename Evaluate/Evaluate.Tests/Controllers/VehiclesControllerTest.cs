@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Web.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Evaluation;
 using Repository.Models;
 using Evaluate.Controllers;
 using Repository;
@@ -85,11 +80,14 @@ namespace Evaluation.Tests.Controllers
         {
             // Arrange
             VehiclesController controller = new VehiclesController();
+            var vehicle = new Vehicle(1, "bats", "batmobile", 2016);
 
             // Act
-            //controller.Post(new Vehicle());
+            controller.Post(vehicle);
+            var result = controller.Get(vehicle.Id);
 
             // Assert
+            Assert.AreEqual(vehicle.Year, result.Year);
         }
 
         [TestMethod]
@@ -102,9 +100,11 @@ namespace Evaluation.Tests.Controllers
 
             // Act
             var updatedVehicle = vehicle.CloneWith(vehicle.Id, year: 2010);
+            controller.Put(updatedVehicle);
+            var result = controller.Get(vehicle.Id);
 
             // Assert
-
+            Assert.AreEqual(updatedVehicle.Year, result.Year);
         }
 
         [TestMethod]
@@ -112,12 +112,15 @@ namespace Evaluation.Tests.Controllers
         {
             // Arrange
             VehiclesController controller = new VehiclesController();
+            var vehicle = new Vehicle(1, "bats", "batmobile", 2016);
+            InMemoryVehicleRepository.Instance.Add(vehicle);
 
             // Act
-            controller.Delete(5);
+            controller.Delete(vehicle.Id);
+            var result = controller.Get(vehicle.Id);
 
-            // Assert
-
+            //Assert
+            Assert.IsNull(result);
         }
     }
 }

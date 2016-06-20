@@ -1,11 +1,7 @@
 ﻿using Repository;
 using Repository.Models;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -21,7 +17,6 @@ namespace Evaluate.Controllers
             _inMemoryVehicleRepository = InMemoryVehicleRepository.Instance;
         }
 
-        // GET api/vehicles
         [Route("api/vehicles/{make?}/{model?}/{year?}")]
         public IEnumerable<Vehicle> Get(string make = null, string model = null, int year = 0)
         {
@@ -42,35 +37,30 @@ namespace Evaluate.Controllers
             return vehicles;
         }
 
-        [Route("api/vehicles")]
-        public IEnumerable<Vehicle> Get()
+        [Route("api/vehicles/id")]
+        public Vehicle Get(int id)
         {
-            IEnumerable<Vehicle> vehicles = _inMemoryVehicleRepository.Get();
-            return vehicles;
+            return _inMemoryVehicleRepository.Get().FirstOrDefault(x => x.Id == id);
         }
 
-        // GET api/vehicles/5
         [Route("api/vehicles/id")]
         public Vehicle GetById(int id)
         {
             return _inMemoryVehicleRepository[id];
         }
 
-        // POST api/vehicles
         [Route("api/vehicles")]
         public void Post([FromBody]Vehicle vehicle)
         {
             _inMemoryVehicleRepository.Add(vehicle);
         }
 
-        // PUT api/vehicles/5
         [Route("api/vehicles")]
         public void Put([FromBody]Vehicle vehicle)
         {
             _inMemoryVehicleRepository.Add(vehicle);
         }
 
-        // DELETE api/vehicles/5
         [Route("api/vehicles/id")]
         public void Delete(int id)
         {
