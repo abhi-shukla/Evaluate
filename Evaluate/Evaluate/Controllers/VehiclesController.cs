@@ -26,11 +26,11 @@ namespace Evaluate.Controllers
         public IEnumerable<Vehicle> Get(string make = null, string model = null, int year = 0)
         {
             IEnumerable<Vehicle> vehicles = _inMemoryVehicleRepository.Get();
-            if (!string.IsNullOrEmpty("model"))
+            if (!string.IsNullOrEmpty(model))
             {
                 vehicles = vehicles.Where(x => x.Model.ToLower() == model.ToLower());
             }
-            if (!string.IsNullOrEmpty("make"))
+            if (!string.IsNullOrEmpty(make))
             {
                 vehicles = vehicles.Where(x => x.Make.ToLower() == make.ToLower());
             }

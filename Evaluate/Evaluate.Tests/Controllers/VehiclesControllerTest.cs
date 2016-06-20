@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Evaluation;
 using Repository.Models;
 using Evaluate.Controllers;
+using Repository;
 
 namespace Evaluation.Tests.Controllers
 {
@@ -19,6 +20,10 @@ namespace Evaluation.Tests.Controllers
         {
             // Arrange
             var controller = new VehiclesController();
+            var vehicle1 = new Vehicle(1, "bats", "batmobile", 2005);
+            var vehicle2 = new Vehicle(2, "Chrysler", "The Green Hornet", 1966);
+            InMemoryVehicleRepository.Instance.Add(vehicle1);
+            InMemoryVehicleRepository.Instance.Add(vehicle2);
 
             // Act
             IEnumerable<Vehicle> result = controller.Get();
@@ -26,21 +31,53 @@ namespace Evaluation.Tests.Controllers
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count());
-            Assert.AreEqual("value1", result.ElementAt(0));
-            Assert.AreEqual("value2", result.ElementAt(1));
+            Assert.AreEqual(vehicle1.Id, result.ElementAt(0).Id);
+            Assert.AreEqual(vehicle2.Id, result.ElementAt(1).Id);
         }
 
         [TestMethod]
-        public void GetById()
+        public void GetByModel()
         {
             // Arrange
             VehiclesController controller = new VehiclesController();
+            var vehicle = new Vehicle(1, "bats", "batmobile", 2016);
+            InMemoryVehicleRepository.Instance.Add(vehicle);
 
             // Act
-            var result = controller.Get(5);
+            var result = controller.Get(model: vehicle.Model);
 
             // Assert
-            //Assert.AreEqual(new Vehicle(), result);
+            Assert.AreEqual(vehicle.Id, result.ToList()[0].Id);
+        }
+
+        [TestMethod]
+        public void GetByMake()
+        {
+            // Arrange
+            VehiclesController controller = new VehiclesController();
+            var vehicle = new Vehicle(1, "bats", "batmobile", 2016);
+            InMemoryVehicleRepository.Instance.Add(vehicle);
+
+            // Act
+            var result = controller.Get(make: vehicle.Make);
+
+            // Assert
+            Assert.AreEqual(vehicle.Id, result.ToList()[0].Id);
+        }
+
+        [TestMethod]
+        public void GetByYear()
+        {
+            // Arrange
+            VehiclesController controller = new VehiclesController();
+            var vehicle = new Vehicle(1, "bats", "batmobile", 2016);
+            InMemoryVehicleRepository.Instance.Add(vehicle);
+
+            // Act
+            var result = controller.Get(year: vehicle.Year);
+
+            // Assert
+            Assert.AreEqual(vehicle.Id, result.ToList()[0].Id);
         }
 
         [TestMethod]
@@ -60,11 +97,14 @@ namespace Evaluation.Tests.Controllers
         {
             // Arrange
             VehiclesController controller = new VehiclesController();
+            var vehicle = new Vehicle(1, "bats", "batmobile", 2016);
+            InMemoryVehicleRepository.Instance.Add(vehicle);
 
             // Act
-            //controller.Put(5, new Vehicle());
+            var updatedVehicle = vehicle.CloneWith(vehicle.Id, year: 2010);
 
             // Assert
+
         }
 
         [TestMethod]
@@ -77,6 +117,7 @@ namespace Evaluation.Tests.Controllers
             controller.Delete(5);
 
             // Assert
+
         }
     }
 }
